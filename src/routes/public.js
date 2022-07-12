@@ -1,6 +1,6 @@
 import Router from "koa-router";
 
-import { createOne } from "../models/Children";
+import { createOne, dropChildren } from "../models/Children";
 import { getAll as getAllSignUps } from "../models/SignUps";
 import { getBySignUp } from "../models/Teams";
 
@@ -26,5 +26,12 @@ router
       ctx.body = await createOne(ctx.request.body.data);
     } catch (err) {
       ctx.throw(500, "Unable to register!");
+    }
+  })
+  .post("/dropchildren", async (ctx) => {
+    try {
+      ctx.body = await dropChildren();
+    } catch (err) {
+      ctx.throw(500, "Unable to drop!");
     }
   });
