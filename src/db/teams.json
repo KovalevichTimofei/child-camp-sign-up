@@ -40,36 +40,30 @@
     "id": 7,
     "signUpId": 2,
     "number": 1,
-    "title": "Нейронные связи"
+    "title": "Чуткие уши"
   },
   {
     "id": 8,
     "signUpId": 2,
     "number": 2,
-    "title": "Чуткие уши"
+    "title": "Чистые уста"
   },
   {
     "id": 9,
     "signUpId": 2,
     "number": 3,
-    "title": "Чистые уста"
+    "title": "Внимательные глаза"
   },
   {
     "id": 10,
     "signUpId": 2,
     "number": 4,
-    "title": "Внимательные глаза"
+    "title": "Горящее сердце"
   },
   {
     "id": 11,
     "signUpId": 2,
     "number": 5,
-    "title": "Горящее сердце"
-  },
-  {
-    "id": 12,
-    "signUpId": 2,
-    "number": 6,
     "title": "Сильные руки"
   }
 ]

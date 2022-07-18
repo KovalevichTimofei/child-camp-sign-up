@@ -108,6 +108,7 @@ async function calculateTeamToAdd(data) {
   const promises = teams.map(async (team) => {
     const { id: teamId, title } = team;
     const childrenInThisTeam = await getByTeam(teamId);
+    const totalCount = childrenInThisTeam.length;
     const countWithThisParams = childrenInThisTeam.filter(
       (el) => el.gender === gender && el.age === age
     ).length;
@@ -116,17 +117,20 @@ async function calculateTeamToAdd(data) {
       teamId,
       title,
       countWithThisParams,
+      totalCount,
     };
   });
   const countOfChildrenWithThisParamsByTeam = await Promise.all(promises);
   return countOfChildrenWithThisParamsByTeam.sort(
-    (a, b) => a.countWithThisParams - b.countWithThisParams
+    (a, b) =>
+      a.countWithThisParams - b.countWithThisParams ||
+      a.totalCount - b.totalCount
   )[0];
 }
 
-export async function createOne(data) {
+export async function createOne(data, teamData) {
   try {
-    const { teamId, title } = await calculateTeamToAdd(data);
+    const { teamId, title } = teamData || (await calculateTeamToAdd(data));
     try {
       const { firstName, surName, age, gender } = data;
       const newChild = {
@@ -150,6 +154,30 @@ export async function createOne(data) {
     } catch (err) {
       console.log(err);
     }
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function addToTeam(data) {
+  const { teamTitle: title, teamId } = data;
+  return createOne(data, { teamId, title });
+}
+
+export async function removeChild(data) {
+  const { id } = data;
+  try {
+    const children = JSON.parse(
+      await fs.promises.readFile("./dist/db/children.json")
+    );
+
+    const newChildrenList = children.filter((el) => el.id !== id);
+    await fs.promises.writeFile(
+      "./dist/db/children.json",
+      JSON.stringify(newChildrenList),
+      "utf8"
+    );
+    return id;
   } catch (err) {
     throw new Error(err);
   }
